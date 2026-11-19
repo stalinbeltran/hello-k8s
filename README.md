@@ -27,7 +27,10 @@ docker logs hello
 docker rm -f hello
 ```
 
-## Kubernetes (minikube)
+## Kubernetes con manifiestos (minikube)
+
+> Referencia didáctica: la app ahora se despliega con Helm (ver abajo).
+> No mezclar: si está instalada con Helm, no aplicar `k8s/`.
 
 ```bash
 # minikube no ve las imágenes locales: hay que cargarlas
@@ -53,4 +56,26 @@ kubectl -n ingress-nginx port-forward svc/ingress-nginx-controller 8080:80
 kubectl scale deployment/hello --replicas=5
 kubectl logs -l app=hello
 kubectl delete -f k8s/
+```
+
+## Helm
+
+El chart está en `charts/hello/`. Los valores configurables están en `values.yaml`.
+
+```bash
+# Ver los YAML que generaría (sin instalar)
+helm template hello charts/hello
+
+# Instalar
+helm install hello charts/hello
+
+# Cambiar valores sin tocar archivos
+helm upgrade hello charts/hello --set greeting="Hola!" --set replicaCount=5
+
+# Historial y volver atrás
+helm history hello
+helm rollback hello 1
+
+# Desinstalar
+helm uninstall hello
 ```

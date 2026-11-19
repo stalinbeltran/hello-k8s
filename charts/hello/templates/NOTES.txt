@@ -1,0 +1,10 @@
+{{ include "hello.fullname" . }} desplegado: {{ .Values.replicaCount }} réplicas, imagen {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+
+Probar desde Ubuntu:
+  curl http://$(minikube ip):{{ .Values.service.nodePort }}/
+{{- if .Values.ingress.enabled }}
+
+Probar desde el navegador (vía Ingress):
+  kubectl -n ingress-nginx port-forward svc/ingress-nginx-controller 8080:80
+  → http://localhost:8080
+{{- end }}
