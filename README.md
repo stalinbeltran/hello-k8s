@@ -44,6 +44,11 @@ kubectl get pods,svc -l app=hello
 # Probar (el Service reparte entre los pods)
 curl http://$(minikube ip):30080/
 
+# Acceso desde el navegador (Windows) vía Ingress
+minikube addons enable ingress        # una sola vez
+kubectl -n ingress-nginx port-forward svc/ingress-nginx-controller 8080:80
+# → abrir http://localhost:8080 y recargar: cada petición la puede atender otro pod
+
 # Escalar, ver logs, borrar
 kubectl scale deployment/hello --replicas=5
 kubectl logs -l app=hello
