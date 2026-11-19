@@ -8,6 +8,12 @@ metadata:
     app: hello
 spec:
   replicas: 3                     # 3 pods idénticos
+  minReadySeconds: 15             # un pod nuevo debe estar "listo" 15s antes de seguir (rollout visible)
+  strategy:
+    type: RollingUpdate           # reemplazo gradual (por defecto)
+    rollingUpdate:
+      maxSurge: 1                 # como máximo 1 pod extra durante la actualización
+      maxUnavailable: 0           # nunca bajar de 3 pods disponibles
   selector:
     matchLabels:
       app: hello                  # gestiona los pods con esta etiqueta
@@ -20,7 +26,7 @@ spec:
         runAsNonRoot: true        # Kubernetes rechaza el pod si intenta correr como root
       containers:
         - name: hello
-          image: hello-k8s:0.1.1
+          image: hello-k8s:0.2.0
           imagePullPolicy: IfNotPresent   # usa la imagen cargada en minikube, no la busca en internet
           ports:
             - containerPort: 8080

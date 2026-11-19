@@ -14,10 +14,10 @@ App "Hello World" en Python (Flask) para aprender contenedores, Kubernetes, Helm
 
 ```bash
 # Construir la imagen
-docker build -t hello-k8s:0.1.1 .
+docker build -t hello-k8s:0.2.0 .
 
 # Ejecutar el contenedor
-docker run -d --name hello -p 8080:8080 -e GREETING="Hola!" hello-k8s:0.1.1
+docker run -d --name hello -p 8080:8080 -e GREETING="Hola!" hello-k8s:0.2.0
 
 # Probar
 curl localhost:8080/
@@ -31,8 +31,8 @@ docker rm -f hello
 
 ```bash
 # minikube no ve las imágenes locales: hay que cargarlas
-docker build -t hello-k8s:0.1.1 .
-minikube image load hello-k8s:0.1.1
+docker build -t hello-k8s:0.2.0 .
+minikube image load hello-k8s:0.2.0
 
 # Desplegar (ConfigMap + Deployment + Service)
 kubectl apply -f k8s/

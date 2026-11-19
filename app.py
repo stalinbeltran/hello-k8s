@@ -6,12 +6,13 @@ from flask import Flask, jsonify
 app = Flask(__name__)
 
 GREETING = os.environ.get("GREETING", "Hello, World!")
+VERSION = "0.2.0"
 
 
 @app.get("/")
 def hello():
     # El hostname nos dirá qué contenedor/pod respondió (útil en Kubernetes)
-    return jsonify(message=GREETING, host=socket.gethostname())
+    return jsonify(message=GREETING, host=socket.gethostname(), version=VERSION)
 
 
 @app.get("/healthz")
