@@ -1,0 +1,14 @@
+# Service: una dirección estable que reparte el tráfico entre los pods.
+# Los pods nacen y mueren (cambian de IP); el Service siempre está en el mismo sitio.
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello
+spec:
+  type: NodePort                  # accesible desde fuera del clúster por un puerto del nodo
+  selector:
+    app: hello                    # envía tráfico a los pods con esta etiqueta
+  ports:
+    - port: 80                    # puerto del Service dentro del clúster
+      targetPort: 8080            # puerto del contenedor (como el 2º número de -p)
+      nodePort: 30080             # puerto en el nodo de minikube (rango 30000-32767)

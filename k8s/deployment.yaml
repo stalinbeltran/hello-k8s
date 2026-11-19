@@ -1,0 +1,47 @@
+# Deployment: le dice a Kubernetes "quiero N copias (pods) de este contenedor
+# siempre en marcha". Si un pod muere, lo recrea solo.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello
+  labels:
+    app: hello
+spec:
+  replicas: 3                     # 3 pods idénticos
+  selector:
+    matchLabels:
+      app: hello                  # gestiona los pods con esta etiqueta
+  template:                       # plantilla de cada pod
+    metadata:
+      labels:
+        app: hello
+    spec:
+      securityContext:
+        runAsNonRoot: true        # Kubernetes rechaza el pod si intenta correr como root
+      containers:
+        - name: hello
+          image: hello-k8s:0.1.1
+          imagePullPolicy: IfNotPresent   # usa la imagen cargada en minikube, no la busca en internet
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: hello-config        # inyecta GREETING como variable de entorno
+          resources:              # cuánto CPU/memoria reserva (requests) y su máximo (limits)
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 250m
+              memory: 128Mi
+          readinessProbe:         # ¿está listo para recibir tráfico?
+            httpGet:
+              path: /healthz
+              port: 8080
+            periodSeconds: 5
+          livenessProbe:          # ¿sigue vivo? si falla repetidamente, se reinicia
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10

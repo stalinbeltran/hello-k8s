@@ -18,9 +18,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 # 5. Copiar el código de la app
 COPY app.py .
 
-# 6. Seguridad: no ejecutar como root
+# 6. Seguridad: no ejecutar como root.
+#    USER con UID numérico (no nombre): Kubernetes lo necesita para verificar
+#    "runAsNonRoot".
 RUN useradd --create-home --uid 10001 appuser
-USER appuser
+USER 10001
 
 # 7. Documentar el puerto que usa la app
 EXPOSE 8080
