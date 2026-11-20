@@ -1,0 +1,12 @@
+# Valores de hello en DEV: pocos recursos, rollout rápido
+replicaCount: 1
+greeting: "Hola desde DEV"
+
+service:
+  nodePort: 30081
+
+ingress:
+  host: dev.localhost
+
+rollout:
+  minReadySeconds: 0

@@ -1,0 +1,21 @@
+# Helmfile: describe QUÉ releases de Helm deben existir y con QUÉ valores,
+# por entorno. Un solo comando instala/actualiza todo:
+#   helmfile -e dev apply
+#   helmfile -e prod apply
+#
+# La extensión .gotmpl permite usar plantillas de Go en este archivo
+# (ojo: se procesan incluso dentro de los comentarios).
+
+environments:
+  dev: {}
+  prod: {}
+
+---
+
+releases:
+  - name: hello
+    namespace: hello-{{ .Environment.Name }}   # un namespace por entorno
+    createNamespace: true
+    chart: ./charts/hello
+    values:
+      - environments/{{ .Environment.Name }}/hello.yaml   # valores propios del entorno

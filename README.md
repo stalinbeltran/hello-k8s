@@ -60,6 +60,8 @@ kubectl delete -f k8s/
 
 ## Helm
 
+> Ahora los despliegues se hacen con Helmfile (ver abajo); estos comandos quedan como referencia.
+
 El chart está en `charts/hello/`. Los valores configurables están en `values.yaml`.
 
 ```bash
@@ -78,4 +80,23 @@ helm rollback hello 1
 
 # Desinstalar
 helm uninstall hello
+```
+
+## Helmfile (entornos dev y prod)
+
+`helmfile.yaml.gotmpl` declara el release `hello`; los valores de cada entorno están en
+`environments/<entorno>/hello.yaml`. Cada entorno va en su namespace (`hello-dev`, `hello-prod`).
+
+```bash
+helmfile -e dev diff      # qué cambiaría (sin aplicar)
+helmfile -e dev apply     # aplicar solo si hay cambios
+helmfile -e prod apply
+helmfile -e dev destroy   # desinstalar el entorno
+```
+
+Acceso desde el navegador (un solo port-forward para ambos entornos):
+
+```bash
+kubectl -n ingress-nginx port-forward svc/ingress-nginx-controller 8080:80
+# → http://dev.localhost:8080  y  http://prod.localhost:8080
 ```

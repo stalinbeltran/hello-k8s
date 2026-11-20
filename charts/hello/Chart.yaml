@@ -3,5 +3,5 @@ apiVersion: v2
 name: hello
 description: App Hello World en Flask
 type: application
-version: 0.1.0        # versión del CHART (súbela cuando cambien las plantillas)
+version: 0.2.0        # versión del CHART (súbela cuando cambien las plantillas)
 appVersion: "0.2.0"   # versión de la APP (se usa como tag de imagen por defecto)

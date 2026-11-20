@@ -1,0 +1,12 @@
+# Valores de hello en PROD: más réplicas, rollout prudente
+replicaCount: 3
+greeting: "Hola desde PROD"
+
+service:
+  nodePort: 30082
+
+ingress:
+  host: prod.localhost
+
+rollout:
+  minReadySeconds: 15
