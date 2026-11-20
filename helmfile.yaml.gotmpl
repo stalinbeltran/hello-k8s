@@ -12,6 +12,13 @@ environments:
 
 ---
 
+# Opciones de Helm para todos los releases
+helmDefaults:
+  wait: true      # dar un release por instalado solo cuando sus pods están listos
+                  # (sin esto, "needs" ordena pero no espera: el webhook del
+                  # Ingress controller aún no responde cuando se crea el Ingress)
+  timeout: 300
+
 repositories:
   - name: ingress-nginx
     url: https://kubernetes.github.io/ingress-nginx

@@ -4,4 +4,9 @@ controller:
   ingressClassResource:
     name: nginx           # el className que usan nuestros Ingress
   service:
-    type: ClusterIP       # en minikube accedemos con port-forward; en la nube sería LoadBalancer
+    # NodePort fijo 30080: minikube se creó con "--ports=127.0.0.1:8080:30080",
+    # así que localhost:8080 llega aquí sin port-forward.
+    # (En la nube sería type: LoadBalancer.)
+    type: NodePort
+    nodePorts:
+      http: 30080
