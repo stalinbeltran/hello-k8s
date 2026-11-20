@@ -1,8 +1,0 @@
-# ConfigMap: configuración de la app, separada de la imagen.
-# Equivale al "-e GREETING=..." de docker run.
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: hello-config
-data:
-  GREETING: "Hola desde Kubernetes!"
