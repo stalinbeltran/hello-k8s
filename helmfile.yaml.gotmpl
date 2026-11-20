@@ -12,10 +12,32 @@ environments:
 
 ---
 
+repositories:
+  - name: ingress-nginx
+    url: https://kubernetes.github.io/ingress-nginx
+
 releases:
+  # ── COMPARTIDO DEL CLÚSTER ──────────────────────────────────────────────
+  # Uno solo para todos los entornos: nombre y namespace fijos (sin el entorno).
+  # Aplicarlo desde dev o prod da el mismo resultado.
+  - name: ingress-nginx
+    namespace: ingress-nginx
+    createNamespace: true
+    chart: ingress-nginx/ingress-nginx
+    version: 4.15.1                 # versión fija: todos instalan lo mismo
+    labels:
+      tier: cluster
+    values:
+      - cluster/ingress-nginx.yaml
+
+  # ── PROPIO DE CADA ENTORNO ──────────────────────────────────────────────
   - name: hello
     namespace: hello-{{ .Environment.Name }}   # un namespace por entorno
     createNamespace: true
     chart: ./charts/hello
+    labels:
+      tier: app
+    needs:
+      - ingress-nginx/ingress-nginx  # instalar primero el controller
     values:
       - environments/{{ .Environment.Name }}/hello.yaml   # valores propios del entorno

@@ -1,0 +1,7 @@
+# Valores del Ingress controller (compartido por todos los entornos).
+# Defaults del chart: https://github.com/kubernetes/ingress-nginx/blob/main/charts/ingress-nginx/values.yaml
+controller:
+  ingressClassResource:
+    name: nginx           # el className que usan nuestros Ingress
+  service:
+    type: ClusterIP       # en minikube accedemos con port-forward; en la nube sería LoadBalancer
